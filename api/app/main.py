@@ -10,11 +10,9 @@ from src.User import router as User
 from src.Device import router as Device
 
 from error import error_handler as eh
-from error.AuthenticationException import AuthenticationException
 from error.NotFoundException import NotFoundException
 from error.ValidationException import ValidationException
-from error.InvalidDataException import InvalidDataException
-from error.InputException import InputException
+
 
 dictConfig(LogConfig().dict())
 logger = logging.getLogger("mycoolapp")
@@ -49,15 +47,12 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-app.add_exception_handler(AuthenticationException,
-                          eh.authentication_exception_handler)
+
 app.add_exception_handler(NotFoundException, eh.not_found_exception_handler)
 app.add_exception_handler(ValidationException, eh.validation_exception_handler)
-app.add_exception_handler(InvalidDataException,
-                          eh.invalid_data_exception_handler)
-app.add_exception_handler(InputException, eh.input_exception_handler)
 
-app.mount('/static', StaticFiles(directory='static'), name='static')
+
+# app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.include_router(User.router)
 app.include_router(Device.router)

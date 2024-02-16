@@ -6,10 +6,6 @@ from config import Configuration
 
 SECRET_KEY = Configuration.get("SECURITY", "SECRET_KEY")
 ALGORITHM = Configuration.get("SECURITY", "ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = Configuration.get("SECURITY",
-                                                "ACCESS_TOKEN_EXPIRE_MINUTES")
-
-SERVICE_TOKEN = Configuration.get("SECURITY", "SERVICE_TOKEN")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 sec = HTTPBasic()

@@ -12,6 +12,8 @@ class UserCreate(BaseSchema):
     email: str
     image: Optional[str]
     is_image_url: Optional[bool]
+    power: int
+    contract_type: str
 
     @validator('email')
     def email_validation(cls, v):

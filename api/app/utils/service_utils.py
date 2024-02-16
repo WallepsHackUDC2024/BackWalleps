@@ -10,7 +10,7 @@ def get_user_by_mail(db, email):
     return db.query(User).filter(User.email == email).first()
 
 
-def check_user(db, email, nickname, telephone):
+def check_user(db, email):
     if get_user_by_mail(db, email) is not None:
         raise ValidationException("Email already exists")
 
