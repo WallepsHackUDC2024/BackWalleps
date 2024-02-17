@@ -35,7 +35,7 @@ def get_devices(db: Session = Depends(get_db)):
     return device_service.get_all(db)
 
 
-@router.get("/{deviceId}", response_model=List[DeviceGetSchema])
+@router.get("/{deviceId}", response_model=DeviceGetSchema)
 def get_device(deviceId: int,
                      db: Session = Depends(get_db)):
     return device_service.get_device(deviceId, db)

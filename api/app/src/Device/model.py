@@ -14,4 +14,6 @@ class Device(Base):
     duration: int = Column(Integer)
     model: str = Column(String)
     brand: str = Column(String)
-    effiency: str = Column(String)
+    efficiency: str = Column(String)
+    class Config:
+        orm_mode = True

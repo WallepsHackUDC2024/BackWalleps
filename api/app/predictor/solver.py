@@ -59,13 +59,15 @@ def get_solution(wcnf:WCNF):
     best = []
     best_cost = 10000
     with RC2(wcnf) as rc2:
-        return rc2.compute()
-    #     for m in rc2.enumerate():
-    #         cost = sum(map(abs, m))
-    #         if cost <= best_cost:
-    #             best = m
-    #             best_cost = cost
-    # return best
+        # miau = rc2.compute()
+        # print(rc2.cost)
+        # return miau
+        for m in rc2.enumerate():
+            cost = sum(map(abs, m))
+            if cost <= best_cost:
+                best = m
+                best_cost = cost
+    return best
 
 
 def solve(devices: DeviceModel, user: UserModel, sections:bool):
@@ -83,9 +85,7 @@ def solve(devices: DeviceModel, user: UserModel, sections:bool):
     solution = get_solution(wcnf)
     print(solution)
     result = []
-
     
-
     prices_dict = {1:0.094415, 2:0.124286, 3:0.171914}
     
     for i in range(len(solution)):
