@@ -7,10 +7,12 @@ from utils.service_utils import set_existing_data
 from error.NotFoundException import NotFoundException
 
 from src.Device.model import Device as ModelDevice
+from src.User.model import User as ModelUser
 
 from src.Device.schema import DeviceGet as DeviceCreateSchema
 from src.Device.schema import DeviceUpdate as DeviceUpdateSchema
 
+from uuid import uuid4
 
 def get_all(db: Session):
     return db.query(ModelDevice).all()
@@ -23,7 +25,7 @@ def get_device(deviceId: int, db: Session):
     return device
 
 
-def get_device_by_id(userId: int, db: Session):
+def get_device_by_userId(userId: int, db: Session):
     device = db.query(ModelDevice).filter(ModelDevice.user_id == userId).all()
     if device is None:
         raise NotFoundException("No devices found for this user")
@@ -31,8 +33,11 @@ def get_device_by_id(userId: int, db: Session):
 
 
 def add_device(payload: DeviceCreateSchema, db: Session):
+    user = db.query(ModelUser).filter(ModelUser.id == payload.user_id).first()
+    if user is None:
+        raise NotFoundException("User not found")
     new_device = ModelDevice(**payload.dict())
-
+    
     db.add(new_device)
     db.commit()
     db.refresh(new_device)
