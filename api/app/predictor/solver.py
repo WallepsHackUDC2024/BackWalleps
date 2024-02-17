@@ -42,10 +42,16 @@ def minimum_one_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices
         minimum = []
         for i in range(timedelta_home):
             minimum.append((i+1)+(index*timedelta_home))
+            bup = ([(i+1)+(index*timedelta_home)], int(prices[i] * data[device.device_name]["kWh"]))
             wcnf.append([(i+1)+(index*timedelta_home)], weight=int(prices[i] * data[device.device_name]["kWh"]))
         wcnf.append(minimum)
         
-        
+def max_one_per_device(wcnf:WCNF, devices: DeviceModel, timedelta_home:int):
+    for index, device in enumerate(devices):
+        for i in range(timedelta_home):
+            for j in range(i+1, timedelta_home):
+                wcnf.append([-((i+1)+index*timedelta_home),-((j+1)+index*timedelta_home)])
+
 def max_one_per_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int):
     if len(devices) > 1:
         for i in range(timedelta_home):
@@ -59,15 +65,9 @@ def get_solution(wcnf:WCNF):
     best = []
     best_cost = 10000
     with RC2(wcnf) as rc2:
-        # miau = rc2.compute()
-        # print(rc2.cost)
-        # return miau
-        for m in rc2.enumerate():
-            cost = sum(map(abs, m))
-            if cost <= best_cost:
-                best = m
-                best_cost = cost
-    return best
+        return rc2.compute()
+
+
 
 
 def solve(devices: DeviceModel, user: UserModel, sections:bool):
@@ -80,6 +80,7 @@ def solve(devices: DeviceModel, user: UserModel, sections:bool):
     
     data = read_json('predictor/data.json')
     minimum_one_hour(wcnf, devices, timedelta_home, prices, data)
+    max_one_per_device(wcnf, devices, timedelta_home)
     max_one_per_hour(wcnf, devices, timedelta_home)
 
     solution = get_solution(wcnf)
