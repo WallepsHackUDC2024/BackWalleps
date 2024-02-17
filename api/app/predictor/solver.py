@@ -17,6 +17,7 @@ def get_prices(tram:bool, arrive_home:int, timedelta_home:int):
         all_keys = list(response.keys())+list(response.keys())
         wanted_keys = all_keys[arrive_home:arrive_home+timedelta_home]
         prices_reduced = []
+        prices = []
         for key in all_keys:
             prices.append(response[key]["price"])
         for key in wanted_keys:
