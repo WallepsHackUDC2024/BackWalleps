@@ -92,10 +92,10 @@ def solve(devices: DeviceModel, user: UserModel, sections:bool):
         if solution[i] > 0:
             if sections:
                 current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[devices[i//timedelta_home].daytime]] * 4 * devices[i//timedelta_home].times_week
-                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[(i%timedelta_home+arrive_home)%24]] * 4 * devices[i//timedelta_home].times_week
+                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[(i%timedelta_home+arrive_home)%24]] * 3 * devices[i//timedelta_home].times_week
             else:
                 current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[devices[i//timedelta_home].daytime] * 4 * devices[i//timedelta_home].times_week /1000
-                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[(i%timedelta_home+arrive_home)%24] * 4 * devices[i//timedelta_home].times_week /1000
+                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[(i%timedelta_home+arrive_home)%24] * 3 * devices[i//timedelta_home].times_week /1000
 
             result.append({"device":devices[i//timedelta_home].device_name,"time":(i%timedelta_home+arrive_home)%24, "times_week":devices[i//timedelta_home].times_week, "current_spent":current_spent, "expected_spent":expected_spent})
             
