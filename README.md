@@ -1,7 +1,6 @@
 # BackWalleps #
 
 Backend for Gradiant's HackUDC challenge 2024.
-# BackWalleps
 
 This project is the backend for Gradiant's HackUDC challenge 2024. It consists of a database and needed endpoints to store and manage data related to users and their home electrical devices.
 
@@ -41,3 +40,13 @@ python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 http://127.0.0.1:8000/docs
 ```
+
+## License
+
+Distributed under the GNU GENERAL PUBLIC LICENSE . See `LICENSE` for more information.
+
+## Contact
+
+Jonàs Salat Torres - [@jonasalat](https://twitter.com/jonasalat) - jsalattorres@gmail.com
+
+Project Link: [https://github.com/WallepsHackUDC2024/BackWalleps](https://github.com/WallepsHackUDC2024/BackWalleps)
