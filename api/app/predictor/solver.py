@@ -23,7 +23,7 @@ def get_prices(tram:bool, arrive_home:int, timedelta_home:int):
         for key in wanted_keys:
             prices_reduced.append(response[key]["price"])
         return prices, prices_reduced
-    prices = [1,1,1,1,1,1,1,1,2,2,3,3,3,3,2,2,2,2,3,3,3,3,2,2,1,1,1,1,1,1,1,1,2,2,3,3,3,3,2,2,2,2,3,3,3,3,2,2]
+    prices = [3,3,3,3,3,3,3,3,2,2,1,1,1,1,2,2,2,2,1,1,1,1,2,2,3,3,3,3,3,3,3,3,2,2,1,1,1,1,2,2,2,2,1,1,1,1,2,2]
     prices_reduced = prices[arrive_home:arrive_home+timedelta_home]
     return prices, prices_reduced
 
