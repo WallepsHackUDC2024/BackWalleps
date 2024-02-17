@@ -42,7 +42,6 @@ def minimum_one_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices
         minimum = []
         for i in range(timedelta_home):
             minimum.append((i+1)+(index*timedelta_home))
-            bup = ([(i+1)+(index*timedelta_home)], int(prices[i] * data[device.device_name]["kWh"]))
             wcnf.append([(i+1)+(index*timedelta_home)], weight=int(prices[i] * data[device.device_name]["kWh"]))
         wcnf.append(minimum)
         
