@@ -59,12 +59,13 @@ def get_solution(wcnf:WCNF):
     best = []
     best_cost = 10000
     with RC2(wcnf) as rc2:
-        for m in rc2.enumerate():
-            cost = sum(map(abs, m))
-            if cost <= best_cost:
-                best = m
-                best_cost = cost
-    return best
+        return rc2.compute()
+    #     for m in rc2.enumerate():
+    #         cost = sum(map(abs, m))
+    #         if cost <= best_cost:
+    #             best = m
+    #             best_cost = cost
+    # return best
 
 
 def solve(devices: DeviceModel, user: UserModel, sections:bool):
