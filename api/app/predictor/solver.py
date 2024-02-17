@@ -23,16 +23,17 @@ def get_prices(tram:bool, arrive_home:int, timedelta_home:int):
     prices = prices[arrive_home:arrive_home+timedelta_home]
     return prices
 
+
 def read_json(file_name:str):
     f = open(file_name)
-    
     # returns JSON object as 
     # a dictionary
     data = json.load(f)
     f.close()
     return data
 
-def add_minimum(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices:list):
+
+def minimum_one_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices:list):
     data = read_json('predictor/data.json')
     for index, device in enumerate(devices):
         minimum = []
@@ -41,6 +42,7 @@ def add_minimum(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices:list
             wcnf.append([(i+1)+(index*timedelta_home)], weight=int(prices[i] * data[device.device_name]["kWh"]))
         wcnf.append(minimum)
         
+        
 def max_one_per_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int):
     if len(devices) > 1:
         for i in range(timedelta_home):
@@ -48,19 +50,9 @@ def max_one_per_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int):
             for index in range(len(devices)):
                 same_time.append(-((i+1)+(index*timedelta_home)))
             wcnf.append(same_time)
-
-def solve(devices: DeviceModel, user: UserModel):
-    timedelta_home = user.home_duration
-    arrive_home = user.home_hours
-
-    prices = get_prices(True, arrive_home, timedelta_home)
-        
-    wcnf = WCNF()
-    
-    add_minimum(wcnf, devices, timedelta_home, prices)
-
-    max_one_per_hour(wcnf, devices, timedelta_home)
-
+            
+            
+def get_solution(wcnf:WCNF):
     best = []
     best_cost = 10000
     with RC2(wcnf) as rc2:
@@ -69,12 +61,26 @@ def solve(devices: DeviceModel, user: UserModel):
             if cost <= best_cost:
                 best = m
                 best_cost = cost
-    
-    print(best)
+    return best
 
+
+def solve(devices: DeviceModel, user: UserModel, sections:bool):
+    timedelta_home = user.home_duration
+    arrive_home = user.home_hours
+
+    prices = get_prices(sections, arrive_home, timedelta_home)
+        
+    wcnf = WCNF()
+    
+    minimum_one_hour(wcnf, devices, timedelta_home, prices)
+    max_one_per_hour(wcnf, devices, timedelta_home)
+
+    solution = get_solution(wcnf)
+    print(solution)
     result = []
-    for i in range(len(best)):
-        if best[i] > 0:
-            result.append({"device":devices[(i-1)//timedelta_home].device_name,"time":i%timedelta_home+arrive_home, "times_week":devices[(i-1)//timedelta_home].times_week})
+    
+    for i in range(len(solution)):
+        if solution[i] > 0:
+            result.append({"device":devices[i//timedelta_home].device_name,"time":i%timedelta_home+arrive_home, "times_week":devices[i//timedelta_home].times_week})
             
     return result 

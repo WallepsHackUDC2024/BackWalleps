@@ -77,10 +77,10 @@ def update_user(userId: int, payload: UserUpdateSchema,
     return user, updated
 
 
-def get_scheduler(userId: int, db: Session):
+def get_scheduler(userId: int, sections: bool, db: Session):
     user = db.query(ModelUser).filter(ModelUser.id == userId).first()
     if user is None:
         raise NotFoundException("User not found")
     devices = db.query(ModelDevice).filter(ModelDevice.user_id == userId).all()
-    solution = solver.solve(devices, user)
+    solution = solver.solve(devices, user, sections)
     return solution

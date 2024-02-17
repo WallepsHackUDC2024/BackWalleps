@@ -36,6 +36,7 @@ class UserCreate(BaseSchema):
 
 
 class UserGet(BaseSchema):
+    id: int
     name: str
     surname: str
     email: str

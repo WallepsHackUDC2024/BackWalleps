@@ -16,6 +16,7 @@ class DeviceCreate(BaseSchema):
 
 
 class DeviceGet(BaseSchema):
+    id: int
     device_name: str
     times_week: int
     daytime: int

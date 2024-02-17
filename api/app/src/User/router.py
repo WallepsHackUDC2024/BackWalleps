@@ -62,7 +62,7 @@ def delete_user(userId: int,
     # return user
 
 
-@router.get("/scheduler/{userId}")
-def get_scheduler(userId: int,
+@router.get("/scheduler/{userId}/{sections}")
+def get_scheduler(userId: int, sections: bool = True,
                          db: Session = Depends(get_db)):
-    return user_service.get_scheduler(userId, db)
+    return user_service.get_scheduler(userId, sections, db)
