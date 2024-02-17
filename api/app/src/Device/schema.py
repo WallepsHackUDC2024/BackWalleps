@@ -14,29 +14,29 @@ class DeviceCreate(BaseSchema):
     brand: str
     effiency: str
 
-    @validator('daytime')
-    def daytime_validation(cls, v):
-        if (v < 0 or v > 23):
-            raise ValueError(
-                'value must be between 0 and 23'
-            )
-        return v
+    # @validator('daytime')
+    # def daytime_validation(cls, v):
+    #     if (v < 0 or v > 23):
+    #         raise ValueError(
+    #             'value must be between 0 and 23'
+    #         )
+    #     return v
     
-    @validator('duration')
-    def duration_validation(cls, v):
-        if (v < 0 or v > 24):
-            raise ValueError(
-                'value must be between 0 and 24'
-            )
-        return v
+    # @validator('duration')
+    # def duration_validation(cls, v):
+    #     if (v < 0 or v > 24):
+    #         raise ValueError(
+    #             'value must be between 0 and 24'
+    #         )
+    #     return v
     
-    @validator('times_week')
-    def times_week_validation(cls, v):
-        if (v < 0 or v > 7):
-            raise ValueError(
-                'value must be between 0 and 7'
-            )
-        return v
+    # @validator('times_week')
+    # def times_week_validation(cls, v):
+    #     if (v < 0 or v > 7):
+    #         raise ValueError(
+    #             'value must be between 0 and 7'
+    #         )
+    #     return v
 
 class DeviceGet(BaseSchema):
     id: int
