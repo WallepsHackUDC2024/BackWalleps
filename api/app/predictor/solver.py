@@ -20,8 +20,8 @@ def get_prices(tram:bool, arrive_home:int, timedelta_home:int):
             prices.append(response[key]["price"])
         return prices
     prices = [1,1,1,1,1,1,1,1,2,2,3,3,3,3,2,2,2,2,3,3,3,3,2,2]
-    prices = prices[arrive_home:arrive_home+timedelta_home]
-    return prices
+    prices_reduced = prices[arrive_home:arrive_home+timedelta_home]
+    return prices, prices_reduced
 
 
 def read_json(file_name:str):
@@ -33,8 +33,7 @@ def read_json(file_name:str):
     return data
 
 
-def minimum_one_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices:list):
-    data = read_json('predictor/data.json')
+def minimum_one_hour(wcnf:WCNF, devices: DeviceModel, timedelta_home:int, prices:list, data:dict):
     for index, device in enumerate(devices):
         minimum = []
         for i in range(timedelta_home):
@@ -68,19 +67,31 @@ def solve(devices: DeviceModel, user: UserModel, sections:bool):
     timedelta_home = user.home_duration
     arrive_home = user.home_hours
 
-    prices = get_prices(sections, arrive_home, timedelta_home)
+    extended_prices, prices = get_prices(sections, arrive_home, timedelta_home)
         
     wcnf = WCNF()
     
-    minimum_one_hour(wcnf, devices, timedelta_home, prices)
+    data = read_json('predictor/data.json')
+    minimum_one_hour(wcnf, devices, timedelta_home, prices, data)
     max_one_per_hour(wcnf, devices, timedelta_home)
 
     solution = get_solution(wcnf)
     print(solution)
     result = []
+
+    
+
+    prices_dict = {1:0.094415, 2:0.124286, 3:0.171914}
     
     for i in range(len(solution)):
         if solution[i] > 0:
-            result.append({"device":devices[i//timedelta_home].device_name,"time":i%timedelta_home+arrive_home, "times_week":devices[i//timedelta_home].times_week})
+            if sections:
+                current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[devices[i//timedelta_home].daytime]]
+                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[i%timedelta_home+arrive_home]]
+            else:
+                current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[devices[i//timedelta_home].daytime]
+                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[i%timedelta_home+arrive_home]
+
+            result.append({"device":devices[i//timedelta_home].device_name,"time":i%timedelta_home+arrive_home, "times_week":devices[i//timedelta_home].times_week, "current_spent":current_spent, "expected_spent":expected_spent})
             
     return result 
