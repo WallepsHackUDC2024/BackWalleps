@@ -18,7 +18,7 @@ class User(Base):
     updated_at: date = Column(DateTime, default=date.today())
     image: str = Column(String, default="")
     is_image_url: bool = Column(Boolean, default=False)
-    power: int = Column(Integer, default=0)
+    is_sections: bool = Column(Boolean, default=True)
     home_hours: int = Column(Integer, default=0)
     home_duration: int = Column(Integer, default=1)
     __mapper_args__ = {

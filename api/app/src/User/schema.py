@@ -12,7 +12,7 @@ class UserCreate(BaseSchema):
     email: str
     image: Optional[str]
     is_image_url: Optional[bool]
-    power: int
+    is_sections: Optional[bool]
     home_hours: int
     home_duration: int
 
@@ -42,7 +42,7 @@ class UserGet(BaseSchema):
     email: str
     image: Optional[str]
     is_image_url: Optional[bool]
-    power: int
+    is_sections: bool
     home_hours: int
     home_duration: int
 
@@ -56,7 +56,7 @@ class UserUpdate(BaseSchema):
     email: Optional[str]
     image: Optional[str]
     is_image_url: Optional[bool]
-    power: Optional[int]
+    is_sections: Optional[bool]
     home_hours: Optional[int]
     home_duration: Optional[int]
     
