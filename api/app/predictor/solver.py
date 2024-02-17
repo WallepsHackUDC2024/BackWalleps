@@ -14,12 +14,15 @@ def get_prices(tram:bool, arrive_home:int, timedelta_home:int):
         if "error" in response:
             print("Error")
             exit()
-        wanted_keys = list(response.keys())[arrive_home:arrive_home+timedelta_home]
-        prices = []
-        for key in wanted_keys:
+        all_keys = list(response.keys())+list(response.keys())
+        wanted_keys = all_keys[arrive_home:arrive_home+timedelta_home]
+        prices_reduced = []
+        for key in all_keys:
             prices.append(response[key]["price"])
-        return prices
-    prices = [1,1,1,1,1,1,1,1,2,2,3,3,3,3,2,2,2,2,3,3,3,3,2,2]
+        for key in wanted_keys:
+            prices_reduced.append(response[key]["price"])
+        return prices, prices_reduced
+    prices = [1,1,1,1,1,1,1,1,2,2,3,3,3,3,2,2,2,2,3,3,3,3,2,2,1,1,1,1,1,1,1,1,2,2,3,3,3,3,2,2,2,2,3,3,3,3,2,2]
     prices_reduced = prices[arrive_home:arrive_home+timedelta_home]
     return prices, prices_reduced
 
@@ -87,10 +90,10 @@ def solve(devices: DeviceModel, user: UserModel, sections:bool):
         if solution[i] > 0:
             if sections:
                 current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[devices[i//timedelta_home].daytime]] * 4 * devices[i//timedelta_home].times_week
-                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[i%timedelta_home+arrive_home]] * 4 * devices[i//timedelta_home].times_week
+                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * prices_dict[extended_prices[(i%timedelta_home+arrive_home)%24]] * 4 * devices[i//timedelta_home].times_week
             else:
                 current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[devices[i//timedelta_home].daytime] * 4 * devices[i//timedelta_home].times_week
-                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[i%timedelta_home+arrive_home] * 4 * devices[i//timedelta_home].times_week
+                expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[(i%timedelta_home+arrive_home)%24] * 4 * devices[i//timedelta_home].times_week
 
             result.append({"device":devices[i//timedelta_home].device_name,"time":i%timedelta_home+arrive_home, "times_week":devices[i//timedelta_home].times_week, "current_spent":current_spent, "expected_spent":expected_spent})
             
