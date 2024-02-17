@@ -1,0 +1,26 @@
+{
+    "fridge":{
+        "name": "fridge",
+        "kWh": 0.78
+    },
+    "dishwasher":{
+        "name": "dishwasher",
+        "kWh": 1.11
+    },
+    "washing_machine":{
+        "name": "washing_machine",
+        "kWh": 3.5
+    },
+    "electric_stove":{
+        "name": "electric_stove",
+        "kWh": 2.5
+    },
+    "electric_water_heater":{
+        "name": "electric_water_heater",
+        "kWh": 2
+    },
+    "electric_heating_system":{
+        "name": "electric_heating_system",
+        "kWh": 1.5
+    }
+}
