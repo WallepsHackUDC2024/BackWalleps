@@ -95,6 +95,6 @@ def solve(devices: DeviceModel, user: UserModel, sections:bool):
                 current_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[devices[i//timedelta_home].daytime] * 4 * devices[i//timedelta_home].times_week
                 expected_spent = data[devices[i//timedelta_home].device_name]["kWh"] * extended_prices[(i%timedelta_home+arrive_home)%24] * 4 * devices[i//timedelta_home].times_week
 
-            result.append({"device":devices[i//timedelta_home].device_name,"time":i%timedelta_home+arrive_home, "times_week":devices[i//timedelta_home].times_week, "current_spent":current_spent, "expected_spent":expected_spent})
+            result.append({"device":devices[i//timedelta_home].device_name,"time":(i%timedelta_home+arrive_home)%24, "times_week":devices[i//timedelta_home].times_week, "current_spent":current_spent, "expected_spent":expected_spent})
             
     return result 
