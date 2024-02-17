@@ -60,3 +60,9 @@ def delete_user(userId: int,
     user = user_service.remove_user(userId, db)
     return {"success": True, "deleted_id": user.id}
     # return user
+
+
+@router.get("/scheduler/{userId}")
+def get_scheduler(userId: int,
+                         db: Session = Depends(get_db)):
+    return user_service.get_scheduler(userId, db)

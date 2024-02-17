@@ -13,7 +13,8 @@ class UserCreate(BaseSchema):
     image: Optional[str]
     is_image_url: Optional[bool]
     power: int
-    contract_type: str
+    home_hours: int
+    home_duration: int
 
     @validator('email')
     def email_validation(cls, v):
@@ -40,6 +41,9 @@ class UserGet(BaseSchema):
     email: str
     image: Optional[str]
     is_image_url: Optional[bool]
+    power: int
+    home_hours: int
+    home_duration: int
 
 class UserGetAll(UserGet):
     password: str
@@ -51,3 +55,7 @@ class UserUpdate(BaseSchema):
     email: Optional[str]
     image: Optional[str]
     is_image_url: Optional[bool]
+    power: Optional[int]
+    home_hours: Optional[int]
+    home_duration: Optional[int]
+    

@@ -10,9 +10,13 @@ from utils.hide_utils import user_show_private
 from utils.service_utils import check_user
 
 from src.User.model import User as ModelUser
+from src.Device.model import Device as ModelDevice
 
 from src.User.schema import UserGet as UserCreateSchema
 from src.User.schema import UserUpdate as UserUpdateSchema
+
+
+import predictor.solver as solver
 
 
 def get_all(db: Session):
@@ -71,3 +75,12 @@ def update_user(userId: int, payload: UserUpdateSchema,
     db.commit()
     db.refresh(user)
     return user, updated
+
+
+def get_scheduler(userId: int, db: Session):
+    user = db.query(ModelUser).filter(ModelUser.id == userId).first()
+    if user is None:
+        raise NotFoundException("User not found")
+    devices = db.query(ModelDevice).filter(ModelDevice.user_id == userId).all()
+    solution = solver.solve(devices, user)
+    return solution
